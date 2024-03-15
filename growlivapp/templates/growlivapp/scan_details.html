@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scan History - Mite Count Pro</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="flex flex-col h-screen">
+  <header class="px-6 py-4 bg-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center">
+        <img src="{% static 'GrowLiv/final.png' %}" alt="Mite Count Pro" class="logo w-8 h-8 mr-2"> <!-- Adjust w-16 h-16 to control the size -->
+        <div class="text-black font-bold">Mite Count Pro</div>
+    </div>
+    
+    
+    
+      <div class="space-x-4">
+        <a href="scan_history.html" class="text-gray-600 hover:text-gray-900">History</a>
+        <a href="profile.html" class="text-gray-600 hover:text-gray-900">Profile</a>
+        <a href="login.html" class="text-gray-600 hover:text-gray-900">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <h2 class="text-xl font-semibold mb-4">Scan History</h2>
+    <div class="space-y-4">
+      <div class="grid grid-cols-4 gap-4 bg-white p-4 shadow rounded">
+        <div class="font-medium">Scan date<br>13/11/2024</div>
+        <div class="font-medium">Predator count<br>60724</div>
+        <div class="font-medium">Feeder count<br>11024</div>
+       
+      </div>
+      <div class="grid grid-cols-4 gap-4 bg-white p-4 shadow rounded">
+        <div class="font-medium">Scan date<br>10/10/2024</div>
+        <div class="font-medium">Predator count<br>62224</div>
+        <div class="font-medium">Feeder count<br>12024</div>
+        
+      </div>
+      <div class="grid grid-cols-4 gap-4 bg-white p-4 shadow rounded">
+        <div class="font-medium">Scan date<br>27/09/2024</div>
+        <div class="font-medium">Predator count<br>60024</div>
+        <div class="font-medium">Feeder count<br>10924</div>
+        
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

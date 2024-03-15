@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+    <div class="task-bar">
+        <img src="{% static "GrowLiv/final.png" %}" alt="Mite Count Pro" class="logo">
+        <div class="mite-count-pro-text">Mite Count Pro</div>
+
+        <div class="task-bar-text">
+            <a href="{% url 'Gr' %}" class="text-gray-600 hover:text-gray-900">History</a>
+        </div>
+        <div class="task-bar-text">
+            <a href="profile.html" class="text-gray-600 hover:text-gray-900">Profile</a>
+        </div>
+        <div class="task-bar-text">
+            <a href="login.html" class="text-gray-600 hover:text-gray-900">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+{% block body %}
+    ***
+{% endblock %}

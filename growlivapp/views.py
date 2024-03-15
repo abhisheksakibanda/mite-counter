@@ -8,6 +8,7 @@ from .forms import SignUpForm, LoginForm
 from .models import Photo
 
 
+
 def upload_photos(request):
     if request.method == 'POST':
         form = PhotoForm(request.POST, request.FILES)
@@ -21,6 +22,7 @@ def upload_photos(request):
         form = PhotoForm()
 
     return render(request, 'growlivapp/upload_photos.html', {'form': form})
+
 
 
 def signup(request):
@@ -40,6 +42,7 @@ def signup(request):
         form = SignUpForm()
 
     return render(request, 'growlivapp/signup.html', {'form': form})
+
 
 
 def login(request):
@@ -67,6 +70,19 @@ def login(request):
         form = LoginForm()
 
     return render(request, 'growlivapp/login.html', {'form': form})
+
+
+
+def Instructions(request):
+    return render(request, 'GrowLivApp/instruction.html')
+
+
+def profile(request):
+    return render(request, 'GrowLivApp/profile.html')
+
+
+def history(request):
+    return render(request, 'GrowLivApp/scan_details.html')
 
 
 def home(request):

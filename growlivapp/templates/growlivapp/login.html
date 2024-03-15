@@ -1,21 +1,193 @@
-<!-- growliv_users/templates/growliv_users/login.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <style>
+        body {
+            background-color: #fff;
+            /* white background */
+            margin: 0;
+            padding: 0;
+        }
+
+        .task-bar {
+            background-color: inherit;
+            /* inherit background color from body */
+            padding: 100px;
+            /* added padding for better spacing */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            /* imaginary lightly colored border */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto 150px;
+            /* adjusted margin for slightly positioning towards the top */
+            text-align: center;
+            position: relative;
+            /* added position relative for positioning absolute elements inside */
+        }
+
+        .logo {
+            position: absolute;
+            top: 5px;
+            /* position at the top of the task bar */
+            left: 10px;
+            width: 30px;
+            /* original width of Mite Count Pro logo */
+            height: 30px;
+            /* original height of Mite Count Pro logo */
+        }
+
+        .mite-count-pro-text {
+            position: absolute;
+            top: 10px;
+            /* position at the top of the task bar */
+            left: 45px;
+            /* adjusted left position to create space between the logos */
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .growliv-logo {
+            width: 300px;
+            /* set width to 300 pixels */
+            height: 300px;
+            /* set height to 300 pixels */
+            margin-top: 1px;
+            /* added margin-top to create space between the logos and the form */
+        }
+
+        .login-form {
+            margin-top: 11px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            border: none;
+            border-radius: 20px;
+            /* curve the edges */
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .task-bar {
+            background-color: inherit;
+            /* inherit background color from body */
+            padding: 20px;
+            /* added padding for better spacing */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            /* imaginary lightly colored border */
+        }
+
+        .forgot-password {
+            color: inherit;
+            /* inherit text color from username field */
+            position: absolute;
+            left: 10px;
+            /* adjust left position */
+            bottom: -30px;
+            /* adjust bottom position */
+            color: rgb(150, 149, 149);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .new-user {
+            position: absolute;
+            bottom: -50px;
+            /* adjust bottom position */
+            left: 30%;
+            /* adjust left position */
+            color: rgb(150, 149, 149);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .sign-up-button {
+            position: absolute;
+            text-decoration: none;
+            text-align: center;
+            /* This ensures horizontal centering */
+            bottom: -60px;
+            right: 30%;
+            width: 20%;
+            height: 35px;
+            /* You might adjust this based on your design */
+            line-height: 35px;
+            /* This should match the height to center the text vertically */
+            margin-left: -2px;
+            border: none;
+            border-radius: 20px;
+            background-color: #ccc;
+            color: black;
+            cursor: pointer;
+            display: inline-block;
+            /* This makes sure the element behaves like a button */
+            padding: 0;
+            /* Reset padding to avoid affecting the line-height */
+        }
+
+
+        .button {
+            display: inline-block;
+            padding: 8px 281px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 20px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
+
 <body>
-<h2>Login</h2>
-{% if error %}
-    <p style="color: red;">{{ error }}</p>
-{% endif %}
-<form method="post" action="{% url 'growlivapp:login' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+
+    <div class="task-bar">
+        <img src="{% static 'GrowLiv/final.png' %}" alt="Mite Count Pro" class="logo">
+        <div class="mite-count-pro-text">Mite Count Pro</div>
+</div>
+
+<div class="container">
+        <img src="{% static 'GrowLiv/logo1.png' %}" alt="Growliv Business Logo" class="growliv-logo">
+        <div class="login-form">
+            <form method="post" action="{% url 'growlivapp:login' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <a href="{% url 'growlivapp:signup' %}" class="button">Login</a>
+
+                <a href="instruction.html" class="forgot-password">Forgot Password?</span> </a>
+                <span class="new-user">New User?</span>
+                <button class="sign-up-button" type="submit">Register</button>
+
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>
+
+
+
+</form>
