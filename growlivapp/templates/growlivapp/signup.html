@@ -1,4 +1,3 @@
-<!-- GrowLivApp/templates/GrowLivApp/signup.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -166,12 +165,12 @@
 <body>
 
 <div class="task-bar">
-    <img src="{% static "GrowLiv/final.png" %}" alt="Mite Count Pro" class="logo">
+    <img src="{% static "growlivapp/final.png" %}" alt="Mite Count Pro" class="logo">
     <div class="mite-count-pro-text">Mite Count Pro</div>
 </div>
 
 <div class="container">
-    <img src="{% static "GrowLiv/logo1.png" %}" alt="Growliv Business Logo" class="growliv-logo">
+    <img src="{% static "growlivapp/logo1.png" %}" alt="Growliv Business Logo" class="growliv-logo">
     <div class="login-form">
         <form method="post" action="{% url 'growlivapp:signup' %}">
             {% csrf_token %}

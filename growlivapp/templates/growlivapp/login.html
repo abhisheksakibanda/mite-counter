@@ -164,30 +164,25 @@
 
 <body>
 
-    <div class="task-bar">
-        <img src="{% static 'GrowLiv/final.png' %}" alt="Mite Count Pro" class="logo">
-        <div class="mite-count-pro-text">Mite Count Pro</div>
+<div class="task-bar">
+    <img src="{% static 'growlivapp/final.png' %}" alt="Mite Count Pro" class="logo">
+    <div class="mite-count-pro-text">Mite Count Pro</div>
 </div>
 
 <div class="container">
-        <img src="{% static 'GrowLiv/logo1.png' %}" alt="Growliv Business Logo" class="growliv-logo">
-        <div class="login-form">
-            <form method="post" action="{% url 'growlivapp:login' %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <a href="{% url 'growlivapp:signup' %}" class="button">Login</a>
+    <img src="{% static 'growlivapp/logo1.png' %}" alt="Growliv Business Logo" class="growliv-logo">
+    <div class="login-form">
+        <form method="post" action="{% url 'growlivapp:login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <a href="{% url 'growlivapp:signup' %}" class="button">Login</a>
 
-                <a href="instruction.html" class="forgot-password">Forgot Password?</span> </a>
-                <span class="new-user">New User?</span>
-                <button class="sign-up-button" type="submit">Register</button>
-
-            </form>
-        </div>
+            <a href="instruction.html" class="forgot-password">Forgot Password?</a>
+            <span class="new-user">New User?</span>
+            <button class="sign-up-button" type="submit">Register</button>
+        </form>
     </div>
+</div>
 </body>
 
 </html>
-
-
-
-</form>

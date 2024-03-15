@@ -112,35 +112,48 @@
             color: #1a202c;
             /* Example darker gray color for hover effect */
         }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 20px;
+            margin: 10px;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="task-bar">
-        <img src="{% static "GrowLiv/final.png" %}" alt="Mite Count Pro" class="logo">
-        <div class="mite-count-pro-text">Mite Count Pro</div>
+<div class="task-bar">
+    <img src="{% static "growlivapp/final.png" %}" alt="Mite Count Pro" class="logo">
+    <div class="mite-count-pro-text">Mite Count Pro</div>
 
-        <div class="task-bar-text">
-            <a href="scan_history.html" class="text-gray-600 hover:text-gray-900">History</a>
-        </div>
-        <div class="task-bar-text">
-            <a href="profile.html" class="text-gray-600 hover:text-gray-900">Profile</a>
-        </div>
-        <div class="task-bar-text">
-            <a href="login.html" class="text-gray-600 hover:text-gray-900">Logout</a>
-        </div>
+    <div class="task-bar-text">
+        <a href="scan_history.html" class="text-gray-600 hover:text-gray-900">History</a>
     </div>
-
-    <div class="container">
-        <img src="{% static "GrowLiv/scan.png" %}" alt="Upload Image" class="growliv-logo">
-        <div class="login-form">
-
-            <a href="{% url 'growlivapp:upload_photos' %}">
-                <input type="submit" value="Upload">
-            </a>
-        </div>
+    <div class="task-bar-text">
+        <a href="profile.html" class="text-gray-600 hover:text-gray-900">Profile</a>
     </div>
+    <div class="task-bar-text">
+        <a href="login.html" class="text-gray-600 hover:text-gray-900">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo">
+    <div class="login-form">
+        <form method="post" action="{% url 'growlivapp:upload_photos' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file-upload" class="custom-file-upload">
+                <input id="file-upload" type="file" name="photo" style="display:none;" onchange="this.form.submit();"/>
+                Upload
+            </label>
+        </form>
+    </div>
+</div>
 
 </body>
 

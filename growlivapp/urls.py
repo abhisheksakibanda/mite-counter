@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import signup, login, home, upload_photos, Instructions, profile, history
 
 from . import views
+from .views import Instructions, profile, history
 
 app_name = 'growlivapp'
 
