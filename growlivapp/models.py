@@ -17,5 +17,5 @@ class Business(models.Model):
 
 class Photo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    image = models.ImageField(upload_to=settings.MEDIA_ROOT + 'mite_img/')
+    image = models.ImageField(upload_to='mite_img')
     description = models.TextField(blank=True, null=True)

@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
     'growlivapp',
-    "counterapp.apps.CounterappConfig"
 ]
 
 MIDDLEWARE = [
