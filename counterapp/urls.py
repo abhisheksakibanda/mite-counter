@@ -5,5 +5,5 @@ from . import views
 app_name = 'counterapp'
 
 urlpatterns = [
-    path('predict/', views.predict, name='predict'),
+    path('predict/<int:img_id>', views.predict, name='predict'),
 ]

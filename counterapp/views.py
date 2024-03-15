@@ -2,14 +2,14 @@ import json
 import os
 
 from django.core.files.images import ImageFile
+from django.core.handlers.wsgi import WSGIRequest
 
 import utils
 from counterapp.models import Result
-from growlivapp.models import Photo
 
 
-def predict(request, img_id):
-    src_image = Photo.objects.get(id=img_id).image
+def predict(request: WSGIRequest, img_id: int) -> str:
+    src_image = Result.objects.get(id=img_id).photo.image.path
     pred_results = utils.predict_mites(src_image)
     file_name = src_image.split("/")[-1]
 
@@ -30,6 +30,13 @@ def predict(request, img_id):
         result = Result.objects.create(
             obj_detection_image=ImageFile(open(preds_img_path, "rb")),
             feeder_mite_count=detect_count.get('feeder'),
-            predator_mite_count=detect_count.get('predator')
+            predator_mite_count=detect_count.get('predator'),
         )
         result.save()
+
+        return json.dumps({
+            'feeder_mite_count': detect_count.get('feeder'),
+            'predator_mite_count': detect_count.get('predator'),
+            'obj_detection_image': preds_img_path,
+            'scan_date': result.scan_date
+        })

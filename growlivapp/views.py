@@ -15,8 +15,10 @@ def upload_photos(request):
             uploaded_images = form.cleaned_data['photo']
             for image in uploaded_images:
                 user = User.objects.get(username=request.user)
-                Photo.objects.create(user=user, image=image)
-            return redirect('growlivapp:home')  # Redirect to your home or another page after successful upload
+                photo = Photo.objects.create(user=user, image=image)
+                photo.save()
+            return redirect('growlivapp:home')
+
     else:
         form = PhotoForm()
 
