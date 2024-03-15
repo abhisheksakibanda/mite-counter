@@ -9,10 +9,10 @@
 </head>
 <body>
 <h2>Upload Photos</h2>
-<form method="post" action="{% url 'GrowLivApp:upload_photos' %}" enctype="multipart/form-data">
+<form method="post" action="{% url 'growlivapp:upload_photos' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.photo }}
     <button type="submit">Upload</button>
-  </form>
+</form>
 </body>
 </html>

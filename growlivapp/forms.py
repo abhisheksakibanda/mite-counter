@@ -1,13 +1,11 @@
-# GrowLivApp/forms.py
 from django import forms
+
 from .models import Photo
 
-# GrowLivApp/forms.py
-from django import forms
-from .models import Photo
 
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
+
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
@@ -22,6 +20,7 @@ class MultipleFileField(forms.FileField):
             result = single_file_clean(data, initial)
         return result
 
+
 class PhotoForm(forms.ModelForm):
     photo = MultipleFileField(label='Select files', required=False)
 
@@ -29,11 +28,14 @@ class PhotoForm(forms.ModelForm):
         model = Photo
         fields = ['photo', ]
 
+
 class SignUpForm(forms.Form):
     username = forms.CharField(max_length=30)
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput)

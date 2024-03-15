@@ -173,7 +173,7 @@
 <div class="container">
     <img src="{% static "GrowLiv/logo1.png" %}" alt="Growliv Business Logo" class="growliv-logo">
     <div class="login-form">
-        <form method="post" action="{% url 'GrowLivApp:signup' %}">
+        <form method="post" action="{% url 'growlivapp:signup' %}">
             {% csrf_token %}
             {{ form.as_p }}
             <a href="instruction.html" class="forgot-password">Forgot Password? </a>
