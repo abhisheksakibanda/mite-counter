@@ -2,7 +2,7 @@ from ultralytics import YOLO
 
 
 def predict_mites(img_source):
-    model = YOLO("weights/best.pt")
+    model = YOLO("counterapp/weights/best.pt")
 
     results = model.predict(source=img_source)
     return results

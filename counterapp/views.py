@@ -3,17 +3,19 @@ import os
 
 from django.core.files.images import ImageFile
 from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpResponse
 from django.shortcuts import redirect
 
 from counterapp import utils
 from counterapp.models import Result
 from growlivapp.models import Photo
+from mitecountpro import settings
 
 
-def predict(request: WSGIRequest, img_id: int) -> str:
-    src_image = Photo.objects.get(id=img_id).image.path
-    pred_results = utils.predict_mites(src_image)
-    file_name = src_image.split("/")[-1]
+def predict(request: WSGIRequest, img_id: int) -> HttpResponse:
+    src_image = Photo.objects.get(id=img_id)
+    pred_results = utils.predict_mites(src_image.image.path)
+    file_name = os.path.basename(src_image.image.path)
 
     for result in pred_results:
         detect_count = dict()
@@ -24,22 +26,14 @@ def predict(request: WSGIRequest, img_id: int) -> str:
 
         print('Detected Objects: ', detect_count)
 
-        # Check if the results directory exists, if not create it
-        if not os.path.exists("../results"):
-            os.mkdir("../results")
-        preds_img_path = result.save(filename=f"../results/{file_name}")
+        save_path = os.path.join(settings.MEDIA_ROOT, file_name)
+        result.save(filename=save_path)
 
-        result = Result.objects.create(
-            obj_detection_image=ImageFile(open(preds_img_path, "rb")),
-            feeder_mite_count=detect_count.get('feeder'),
-            predator_mite_count=detect_count.get('predator'),
+        pred_result = Result.objects.create(
+            obj_detection_image=ImageFile(open(f"media/{file_name}", "rb")),
+            feeder_mite_count=detect_count.get('feeder', 0),
+            predator_mite_count=detect_count.get('predator', 0),
+            photo_id=img_id
         )
-        result.save()
-        redirect('growlivapp:scan_detail')
-
-        return json.dumps({
-            'feeder_mite_count': detect_count.get('feeder'),
-            'predator_mite_count': detect_count.get('predator'),
-            'obj_detection_image': preds_img_path,
-            'scan_date': result.scan_date
-        })
+        pred_result.save()
+        return redirect('growlivapp:scan_detail_page')
