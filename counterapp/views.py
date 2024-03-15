@@ -3,13 +3,15 @@ import os
 
 from django.core.files.images import ImageFile
 from django.core.handlers.wsgi import WSGIRequest
+from django.shortcuts import redirect
 
-import utils
+from counterapp import utils
 from counterapp.models import Result
+from growlivapp.models import Photo
 
 
 def predict(request: WSGIRequest, img_id: int) -> str:
-    src_image = Result.objects.get(id=img_id).photo.image.path
+    src_image = Photo.objects.get(id=img_id).image.path
     pred_results = utils.predict_mites(src_image)
     file_name = src_image.split("/")[-1]
 
@@ -33,6 +35,7 @@ def predict(request: WSGIRequest, img_id: int) -> str:
             predator_mite_count=detect_count.get('predator'),
         )
         result.save()
+        redirect('growlivapp:scan_detail')
 
         return json.dumps({
             'feeder_mite_count': detect_count.get('feeder'),

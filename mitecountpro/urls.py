@@ -23,6 +23,7 @@ from mitecountpro import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('growlivapp.urls')),
+    path('count/', include('counterapp.urls')),
 ]
 
 if settings.DEBUG:

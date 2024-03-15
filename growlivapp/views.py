@@ -1,14 +1,27 @@
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
+from counterapp.models import Result
 from .forms import PhotoForm
 from .forms import SignUpForm, LoginForm
 from .models import Photo
 
 
+def scan_detail_page(request):
+    # Fetch all scan results or use filters as needed
+    scan_results = Result.objects.all().order_by('-scan_date')
+
+    # Pass the results to the template
+    context = {
+        'scan_results': scan_results,
+    }
+    return render(request, 'growlivapp/scan_details.html', context)
+
+
 def upload_photos(request):
+    photo: Photo = Photo()
     if request.method == 'POST':
         form = PhotoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -17,7 +30,7 @@ def upload_photos(request):
                 user = User.objects.get(username=request.user)
                 photo = Photo.objects.create(user=user, image=image)
                 photo.save()
-            return redirect('growlivapp:home')
+            return redirect('counterapp:predict', img_id=photo.id)
 
     else:
         form = PhotoForm()

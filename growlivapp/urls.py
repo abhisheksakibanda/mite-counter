@@ -12,5 +12,6 @@ urlpatterns = [
     path('instruction/', views.Instructions, name='instruction'),
     path('profile/', views.profile, name='profile'),
     path('history/', views.history, name='history'),
+    path('scan_detail/', views.scan_detail_page, name='scan_detail_page'),
     # Add other URLs as needed
 ]
