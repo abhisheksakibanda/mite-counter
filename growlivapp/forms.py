@@ -30,12 +30,15 @@ class PhotoForm(forms.ModelForm):
 
 
 class SignUpForm(forms.Form):
-    username = forms.CharField(max_length=30)
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}), max_length=30)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}))
+
+    class Meta:
+        fields = ['username', 'email', 'password', 'confirm_password']
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=30)
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}), max_length=30)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
