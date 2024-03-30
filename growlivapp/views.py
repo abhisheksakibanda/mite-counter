@@ -1,12 +1,16 @@
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView
 
 from counterapp.models import Result
-from .forms import PhotoForm
-from .forms import SignUpForm, LoginForm
-from .models import Photo
+from .forms import VideoForm, BusinessForm
+from .models import Video, Business
 
 
 def scan_detail_page(request):
@@ -17,88 +21,102 @@ def scan_detail_page(request):
     context = {
         'scan_results': scan_results,
     }
-    return render(request, 'growlivapp/scan_details.html', context)
+    return render(request, template_name='growlivapp/scan_details.html', context=context)
 
 
-def upload_photos(request):
-    photo: Photo = Photo()
+def upload_video(request):
     if request.method == 'POST':
-        form = PhotoForm(request.POST, request.FILES)
+        form = VideoForm(request.POST, request.FILES)
+        video = None
         if form.is_valid():
-            uploaded_images = form.cleaned_data['photo']
-            for image in uploaded_images:
-                user = User.objects.get(username=request.user)
-                photo = Photo.objects.create(user=user, image=image)
-                photo.save()
-            return redirect('counterapp:predict', img_id=photo.id)
+            uploaded_video = form.cleaned_data['video']
+            for vid in uploaded_video:
+                business = Business.objects.get(username=request.user)
+                video = Video.objects.create(business=business, video=vid)
+                video.save()
+            return redirect(to='counterapp:predict', img_id=video.id)
 
     else:
-        form = PhotoForm()
+        form = VideoForm()
 
-    return render(request, 'growlivapp/upload_photos.html', {'form': form})
-
-
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-
-            user = User(username=username, email=email, password=make_password(password))
-            user.save()
-
-            # Redirect to login or home page
-            return redirect('growlivapp:login')
-    else:
-        form = SignUpForm()
-
-    return render(request, 'growlivapp/signup.html', {'form': form})
+    return render(request, template_name='growlivapp/upload_video.html', context={'form': form})
 
 
-def login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+class BusinessRegisterView(CreateView):
+    template_name = 'growlivapp/signup.html'
+    form_class = BusinessForm
+    success_url = reverse_lazy('growlivapp:login')
 
-            try:
-                user = User.objects.get(username=username)
-                if check_password(password, user.password):
-                    # Set session variables
-                    request.session['user_id'] = user.id
-                    request.session['username'] = user.username
-
-                    return redirect('growlivapp:home')
-                else:
-                    # Incorrect password
-                    return render(request, 'growlivapp/login.html', {'form': form, 'error': 'Invalid credentials'})
-            except User.DoesNotExist:
-                # User does not exist
-                return render(request, 'growlivapp/login.html', {'form': form, 'error': 'Invalid credentials'})
-    else:
-        form = LoginForm()
-
-    return render(request, 'growlivapp/login.html', {'form': form})
+    def get(self, request, *args, **kwargs) -> HttpResponse:
+        return super().get(request=request, *args, **kwargs)
 
 
-def Instructions(request):
-    return render(request, 'GrowLivApp/instruction.html')
+class CustomAuthenticationForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = ''
+        self.fields['username'].widget.attrs.update({
+            'class': 'un',
+            'placeholder': 'Email'
+        })
+        self.fields['password'].label = ''
+        self.fields['password'].widget.attrs.update({
+            'class': 'un',
+            'placeholder': 'Password'
+        })
+
+
+class BusinessLoginView(LoginView):
+    template_name = 'growlivapp/login.html'
+    form_class = CustomAuthenticationForm
+
+    def post(self, request, *args, **kwargs) -> HttpResponseRedirect | HttpResponse:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request=request, username=username, password=password)
+        if user:
+            if check_password(password, user.password):
+                request.session['user_id'] = user.id
+                request.session['username'] = user.username
+                login(request=request, user=user)
+                return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:home'))
+            else:
+                return render(request, template_name='growlivapp/login.html',
+                              context={'err': 'Login details are incorrect. Please try again.',
+                                       'form': CustomAuthenticationForm(request.POST)})
+        else:
+            return render(request, template_name='growlivapp/login.html',
+                          context={'err': 'Login details are incorrect. Please try again.',
+                                   'form': CustomAuthenticationForm(request.POST)})
+
+    def get(self, request, *args, **kwargs) -> HttpResponseRedirect | HttpResponse:
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:home'))
+        return super().get(request=request, *args, **kwargs)
+
+
+def instructions(request):
+    return render(request, template_name='growlivapp/instruction.html')
 
 
 def profile(request):
-    return render(request, 'GrowLivApp/profile.html')
+    return render(request, template_name='growlivapp/profile.html')
 
 
 def history(request):
-    return render(request, 'GrowLivApp/scan_details.html')
+    return render(request, template_name='growlivapp/scan_details.html')
 
 
+@login_required
 def home(request):
     # Retrieve user information from session
     user_id = request.session.get('user_id')
     username = request.session.get('username')
 
-    return render(request, 'growlivapp/home.html', {'username': username})
+    return render(request, template_name='growlivapp/home.html', context={'username': username})
+
+
+@login_required
+def logout_user(request) -> HttpResponseRedirect:
+    logout(request=request)
+    return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:login'))

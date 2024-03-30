@@ -1,42 +1,69 @@
-{% extends 'growlivapp/Authbarbase.html' %}
+{% extends 'growlivapp/authbarbase.html' %}
 {% load static %}
 {% block body_block %}
-
-
     <div class="container">
-        <div class="main" style="height: 750px">
+        <div class="main">
             <img src="{% static "growlivapp/logo1.png" %}" alt="Growliv Business Logo" class="growliv-logo">
             <div class="login-form">
                 <form class="form1" method="post" action="{% url 'growlivapp:signup' %}">
                     {% csrf_token %}
-                    <div>
-                        <input type="text" name="username" placeholder="Username" class="un" style="margin-left: 0px">
+                    <div class="form-group">
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <span class="error">{{ form.email.errors }}</span>
+                        {% endif %}
                     </div>
-                    <div>
-                        <input type="email" name="email" placeholder="Email" class="un" style="margin-left: 0px">
+                    <div class="form-group">
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <span class="error">{{ form.password1.errors }}</span>
+                        {% endif %}
                     </div>
-                    <div>
-                        <input type="password" name="password1" placeholder="Password" class="un"
-                               style="margin-left: 0px">
+                    <div class="form-group">
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <span class="error">{{ form.password2.errors }}</span>
+                        {% endif %}
                     </div>
-                    <div>
-                        <input type="password" name="password2" placeholder="Confirm Password" class="un"
-                               style="margin-left: 0px">
+                    <div class="form-group">
+                        {{ form.address_1 }}
+                        {% if form.address_1.errors %}
+                            <span class="error">{{ form.address_1.errors }}</span>
+                        {% endif %}
                     </div>
-                    
-
-                    <button class="submit" type="submit" style="margin-left: 0px">Sign Up</button>
-                    <br>
-                    <br>
-                    <a class="forgot" href="instruction.html" class="forgot-password">Forgot Password? </a>
-                    <br>
-                    <br>
-                    <span class="new-user">New User?</span> 
-                    <a class="signup" href="{% url 'growlivapp:login' %}">Login</a>
-
+                    <div class="form-group">
+                        {{ form.address_2 }}
+                        {% if form.address_2.errors %}
+                            <span class="error">{{ form.address_2.errors }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.business_name }}
+                        {% if form.business_name.errors %}
+                            <span class="error">{{ form.business_name.errors }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.business_phone }}
+                        {% if form.business_phone.errors %}
+                            <span class="error">{{ form.business_phone.errors }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.contact_person_name }}
+                        {% if form.contact_person_name.errors %}
+                            <span class="error">{{ form.contact_person_name.errors }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.contact_person_mobile }}
+                        {% if form.contact_person_mobile.errors %}
+                            <span class="error">{{ form.contact_person_mobile.errors }}</span>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="submit" style="margin-bottom: 5%">Sign Up</button>
                 </form>
             </div>
         </div>
     </div>
-
 {% endblock %}

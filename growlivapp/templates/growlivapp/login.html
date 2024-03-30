@@ -1,19 +1,19 @@
-{% extends 'growlivapp/Authbarbase.html' %}
+{% extends 'growlivapp/authbarbase.html' %}
 {% load static %}
 {% block body_block %}
     <div class="container">
         <div class="main">
             <img src="{% static 'growlivapp/logo1.png' %}" alt="Growliv Business Logo" class="growliv-logo">
-            <form class="form1">
+            {% if err %}
+                <p class="error">{{ err }}</p>
+            {% endif %}
+            <form class="form1" action="{% url 'growlivapp:login' %}" method="post">
                 {% csrf_token %}
-                <div style="align-content: center">
-                    <input class="un " type="text" placeholder="Username" style="margin-left: 0px">
-                </div>
-                <div style="align-content: center">
-                    <input class="pass" type="password" placeholder="Password" style="margin-left: 0px">
-                </div>
-                <a class="submit" align="center" style="margin-left: 0px">Sign in</a>
-                <p class="forgot" align="center"><a href="#">Forgot Password?</a></p>
+                {{ form.as_p }}
+                <button type="submit" class="submit">Sign in</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'growlivapp:signup' %}">Sign up</a></p>
+            <p class="forgot"><a href="{% url 'growlivapp:instruction' %}">Forgot Password?</a></p>
         </div>
     </div>
 {% endblock %}

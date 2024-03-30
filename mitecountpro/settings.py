@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
     'growlivapp',
-    'counterapp.apps.CounterappConfig'
+    'counterapp.apps.CounterappConfig',
+    'phonenumber_field',
+    'cities_light',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +69,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'growlivapp.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 WSGI_APPLICATION = 'mitecountpro.wsgi.application'
@@ -123,3 +130,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Cities light
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['en']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['CA']
+
+LOGIN_URL = '/login'

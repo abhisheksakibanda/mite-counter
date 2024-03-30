@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import BusinessLoginView, BusinessRegisterView
 
 app_name = 'growlivapp'
 
@@ -9,14 +10,15 @@ urlpatterns = [
     path('', views.home, name='home'),
 
     # path for the login and registration pages
-    path('login/', views.login, name='login'),
-    path('signup/', views.signup, name='signup'),
+    path('login/', BusinessLoginView.as_view(), name='login'),
+    path('signup/', BusinessRegisterView.as_view(), name='signup'),
 
-    path('upload-photos/', views.upload_photos, name='upload_photos'),
+    path('upload/', views.upload_video, name='upload'),
     path('profile/', views.profile, name='profile'),
     path('history/', views.history, name='history'),
     path('scan_detail/', views.scan_detail_page, name='scan_detail_page'),
 
     # path for login related pages
-    path('instruction/', views.Instructions, name='instruction'),
+    path('instruction/', views.instructions, name='instruction'),
+    path('logout/', views.logout_user, name='logout_user'),
 ]
