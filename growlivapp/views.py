@@ -39,7 +39,7 @@ def upload_video(request):
     else:
         form = VideoForm()
 
-    return render(request, template_name='growlivapp/upload_video.html', context={'form': form})
+    return render(request, template_name='growlivapp/home.html', context={'form': form})
 
 
 class BusinessRegisterView(CreateView):

@@ -124,7 +124,6 @@
         }
     </style>
 </head>
-
 <body>
 
 <div class="task-bar">
@@ -143,17 +142,26 @@
 </div>
 
 <div class="container">
-    <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo">
+    <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo" id="upload-image">
     <div class="login-form">
-        <form method="post" action="{% url 'growlivapp:upload' %}" enctype="multipart/form-data">
+        <form method="post" action="{% url 'growlivapp:upload' %}" enctype="multipart/form-data" id="upload-form">
             {% csrf_token %}
-            <label for="file-upload" class="custom-file-upload">
-                <input id="file-upload" type="file" name="photo" style="display:none;" onchange="this.form.submit();"/>
-                Upload
-            </label>
+            <input id="file-upload" type="file" name="photo" style="display:none;"/>
         </form>
     </div>
 </div>
+
+<script>
+    // Add event listener to the image for file upload dialog
+    document.getElementById('upload-image').addEventListener('click', function () {
+        document.getElementById('file-upload').click();
+    });
+
+    // Submit the form on file selection
+    document.getElementById('file-upload').addEventListener('change', function () {
+        document.getElementById('upload-form').submit();
+    });
+</script>
 
 </body>
 
