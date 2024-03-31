@@ -15,7 +15,6 @@ urlpatterns = [
 
     path('upload/', views.upload_video, name='upload'),
     path('profile/', views.profile, name='profile'),
-    path('history/', views.history, name='history'),
     path('scan_detail/', views.scan_detail_page, name='scan_detail_page'),
 
     # path for login related pages

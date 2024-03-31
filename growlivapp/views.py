@@ -10,7 +10,7 @@ from django.views.generic import CreateView
 
 from counterapp.models import Result
 from .forms import VideoForm, BusinessForm
-from .models import Video, Business
+from .models import Business
 
 
 def scan_detail_page(request):
@@ -26,15 +26,13 @@ def scan_detail_page(request):
 
 def upload_video(request):
     if request.method == 'POST':
-        form = VideoForm(request.POST, request.FILES)
-        video = None
+        form = VideoForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            uploaded_video = form.cleaned_data['video']
-            for vid in uploaded_video:
-                business = Business.objects.get(username=request.user)
-                video = Video.objects.create(business=business, video=vid)
-                video.save()
-            return redirect(to='counterapp:predict', img_id=video.id)
+            business = Business.objects.get(username=request.user)
+            video = form.save(commit=False)
+            video.business = business
+            video.save()
+            return redirect('counterapp:predict', video_id=video.id)
 
     else:
         form = VideoForm()
@@ -100,11 +98,8 @@ def instructions(request):
 
 
 def profile(request):
-    return render(request, template_name='growlivapp/profile.html')
-
-
-def history(request):
-    return render(request, template_name='growlivapp/scan_details.html')
+    business = Business.objects.get(email=request.user.email)
+    return render(request, template_name='growlivapp/profile.html', context={'business': business})
 
 
 @login_required

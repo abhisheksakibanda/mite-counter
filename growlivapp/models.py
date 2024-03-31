@@ -21,3 +21,6 @@ class Video(models.Model):
     video = models.FileField(upload_to='mite_videos', validators=[FileExtensionValidator(
         allowed_extensions=['asf', 'avi', 'gif', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'ts', 'wmv', 'webm'])])
     description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.video.name
