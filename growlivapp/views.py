@@ -77,13 +77,10 @@ class BusinessLoginView(LoginView):
         user = authenticate(request=request, username=username, password=password)
         if user:
             if check_password(password, user.password):
-                if not user.business.business_name:
-                    return redirect('growlivapp:business_details')
-                else:
-                    request.session['user_id'] = user.id
-                    request.session['username'] = user.username
-                    login(request=request, user=user)
-                    return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:home'))
+                request.session['user_id'] = user.id
+                request.session['username'] = user.username
+                login(request=request, user=user)
+                return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:home'))
             else:
                 return render(request, template_name='growlivapp/login.html',
                               context={'err': 'Login details are incorrect. Please try again.',
