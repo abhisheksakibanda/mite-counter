@@ -16,9 +16,8 @@ class BusinessForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs.update({'class': 'un', 'style': 'margin-left: 0px;', 'placeholder': field.label})
+            field.widget.attrs.update({'class': 'un', 'placeholder': field.label})
 
     class Meta:
         model = Business
-        fields = ['email', 'password1', 'password2', 'address_1', 'address_2', 'business_name', 'business_phone',
-                  'contact_person_name', 'contact_person_mobile']
+        fields = ['email', 'password1', 'password2', 'business_name', 'business_phone', 'contact_person_name']

@@ -2,6 +2,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
@@ -46,6 +47,8 @@ class BusinessRegisterView(CreateView):
     success_url = reverse_lazy('growlivapp:login')
 
     def get(self, request, *args, **kwargs) -> HttpResponse:
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:home'))
         return super().get(request=request, *args, **kwargs)
 
 
@@ -74,10 +77,13 @@ class BusinessLoginView(LoginView):
         user = authenticate(request=request, username=username, password=password)
         if user:
             if check_password(password, user.password):
-                request.session['user_id'] = user.id
-                request.session['username'] = user.username
-                login(request=request, user=user)
-                return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:home'))
+                if not user.business.business_name:
+                    return redirect('growlivapp:business_details')
+                else:
+                    request.session['user_id'] = user.id
+                    request.session['username'] = user.username
+                    login(request=request, user=user)
+                    return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:home'))
             else:
                 return render(request, template_name='growlivapp/login.html',
                               context={'err': 'Login details are incorrect. Please try again.',

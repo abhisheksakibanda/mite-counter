@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'growlivapp',
     'counterapp.apps.CounterappConfig',
     'phonenumber_field',
-    'cities_light',
 ]
 
 MIDDLEWARE = [

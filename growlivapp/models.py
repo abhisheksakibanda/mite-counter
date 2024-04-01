@@ -5,12 +5,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Business(User):
-    address_1 = models.CharField(max_length=50)
-    address_2 = models.CharField(blank=True, null=True, max_length=50)
     business_name = models.CharField(max_length=50)
     business_phone = PhoneNumberField()
     contact_person_name = models.CharField(max_length=50)
-    contact_person_mobile = PhoneNumberField()
 
     class Meta:
         verbose_name_plural = "Businesses"
