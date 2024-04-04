@@ -10,7 +10,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
 
 from counterapp.models import Result
-from .forms import VideoForm, BusinessForm
+from .forms import VideoForm, BusinessForm, forgotPasswordForm
 from .models import Business
 
 
@@ -103,6 +103,29 @@ def instructions(request):
 def profile(request):
     business = Business.objects.get(email=request.user.email)
     return render(request, template_name='growlivapp/profile.html', context={'business': business})
+
+
+def forgot_password(request):
+    emailfield = forgotPasswordForm()
+    if request.method == 'POST':
+        email = request.POST['email']
+        try:
+            user = User.objects.get(email=email)
+            return render(request, template_name='growlivapp/instruction.html')
+        except User.DoesNotExist:
+            return render(request, template_name='growlivapp/forgot_password.html',
+                          context={'err': 'The email you entered does not exist in our records.', 'form': emailfield})
+    return render(request, template_name='growlivapp/forgot_password.html', context={'form': emailfield})
+
+
+def change_password(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        user = User.objects.get(email=request.user.email)
+        user.set_password(password)
+        user.save()
+        return render(request, template_name='growlivapp/login.html')
+    return render(request, template_name='growlivapp/change_password.html')
 
 
 @login_required

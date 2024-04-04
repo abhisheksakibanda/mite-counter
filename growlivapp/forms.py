@@ -10,6 +10,15 @@ class VideoForm(forms.ModelForm):
         fields = ['video']
 
 
+class forgotPasswordForm(forms.Form):
+    email = forms.EmailField(label='Email')
+
+    class Meta:
+        model = Business
+        fields = ['email']
+
+
+
 class BusinessForm(UserCreationForm):
     email = forms.EmailField(label='Email')
 

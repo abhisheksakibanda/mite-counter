@@ -19,5 +19,6 @@ urlpatterns = [
 
     # path for login related pages
     path('instruction/', views.instructions, name='instruction'),
+    path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('logout/', views.logout_user, name='logout_user'),
 ]
