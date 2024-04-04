@@ -9,6 +9,7 @@
 </head>
 <body class="bg-gray-100">
 
+
 <div class="flex flex-col h-screen">
     <header class="px-6 py-4 bg-white shadow-md">
         <div class="container mx-auto flex justify-between items-center">
@@ -44,6 +45,15 @@
                            class="w-full text-center block bg-red-500 text-white p-2 rounded hover:bg-red-600">Delete
                             Account</a>
                     </div>
+                    {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                                <div class="alert {{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

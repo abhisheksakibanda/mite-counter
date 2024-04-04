@@ -1,6 +1,6 @@
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
+from django.contrib import messages
 
 from counterapp.models import Result
 from .forms import VideoForm, BusinessForm, forgotPasswordForm
@@ -118,16 +119,25 @@ def forgot_password(request):
     return render(request, template_name='growlivapp/forgot_password.html', context={'form': emailfield})
 
 
-# I want to take password from the user and update it in the database as per the login user
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        password = request.POST['password']
-        user = User.objects.get(email=request.user.email)
-        user.set_password(password)
-        user.save()
-        return render(request, template_name='growlivapp/home.html')
-    return render(request, template_name='growlivapp/changepassword.html')
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('growlivapp:profile')
+        else:
+            # If form is not valid, add a generic message or specific error messages
+            messages.error(request, 'Please correct the errors below.')
+            # Optionally, add specific form error messages
+            for field in form.errors:
+                for error in form.errors[field]:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'growlivapp/changepassword.html', {'form': form})
 
 
 @login_required
