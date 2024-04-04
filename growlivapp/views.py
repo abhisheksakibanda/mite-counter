@@ -118,14 +118,16 @@ def forgot_password(request):
     return render(request, template_name='growlivapp/forgot_password.html', context={'form': emailfield})
 
 
+# I want to take password from the user and update it in the database as per the login user
+@login_required
 def change_password(request):
     if request.method == 'POST':
         password = request.POST['password']
         user = User.objects.get(email=request.user.email)
         user.set_password(password)
         user.save()
-        return render(request, template_name='growlivapp/login.html')
-    return render(request, template_name='growlivapp/change_password.html')
+        return render(request, template_name='growlivapp/home.html')
+    return render(request, template_name='growlivapp/changepassword.html')
 
 
 @login_required
