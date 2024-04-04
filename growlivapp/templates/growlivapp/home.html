@@ -122,6 +122,8 @@
             border-radius: 20px;
             margin: 10px;
         }
+
+        
     </style>
 </head>
 <body>
@@ -142,12 +144,14 @@
 </div>
 
 <div class="container">
-    <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo" id="upload-image">
-    <div class="login-form">
-        <form method="post" action="{% url 'growlivapp:upload' %}" enctype="multipart/form-data" id="upload-form">
-            {% csrf_token %}
-            <input id="file-upload" type="file" name="video" style="display:none;"/>
-        </form>
+    <div class="main">
+        <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo" id="upload-image">
+        <div class="login-form">
+            <form method="post" action="{% url 'growlivapp:upload' %}" enctype="multipart/form-data" id="upload-form">
+                {% csrf_token %}
+                <input id="file-upload" type="file" name="video" style="display:none;"/>
+            </form>
+        </div>
     </div>
 </div>
 
