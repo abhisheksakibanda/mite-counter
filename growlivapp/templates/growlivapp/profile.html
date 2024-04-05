@@ -12,13 +12,32 @@
 {% block body_block %}
     <main class="p-6 flex-grow">
         <div class="max-w-xl mx-auto">
+            {#        here will be the code for the information#}
             <div class="bg-white p-6 shadow rounded">
-                <div class="flex flex-col items-center pb-10">
-                    <h2 class="text-xl font-semibold mb-2">{{ business.business_name }}</h2>
-                    <div class="text-gray-700 mb-6">{{ business.contact_person_name }}</div>
+                <h1 class="text-2xl font-bold text-center mb-6" style="font-family: Lucinda Grande, Lucinda Sans Unicode, Helvetica, Arial, Verdana, sans-serif">User Infromation</h1>
+                <div class="w-full mb-3">
+                    <label class="text-gray-700">Email</label>
+                    <input type="email" value="{{ business.email }}" readonly class="w-full p-2 border rounded">
+                </div>
+                <div class="w-full mb-3">
+                    <label class="text-gray-700">Business Name</label>
+                    <input type="email" value="{{ business.business_name }}" readonly class="w-full p-2 border rounded">
+                </div>
+                <div class="w-full mb-3">
+                    <label class="text-gray-700">Business Contact</label>
+                    <input type="email" value="{{ business.business_phone }}" readonly
+                           class="w-full p-2 border rounded">
+                </div>
+                <div class="w-full mb-3">
+                    <label class="text-gray-700">Contact Name</label>
+                    <input type="email" value="{{ business.contact_person_name }}" readonly
+                           class="w-full p-2 border rounded">
+                </div>
+                <div class="flex flex-col items-center pb-10" style="padding-top: 40px">
                     <div class="w-full mb-3">
-                        <label class="text-gray-700">Email</label>
-                        <input type="email" value="{{ business.email }}" readonly class="w-full p-2 border rounded">
+                        <a href="{% url 'growlivapp:change_password' %}"
+                           class="w-full text-center block bg-green-600 text-white p-2 rounded hover:bg-green-800">Save
+                            Changes</a>
                     </div>
                     <div class="w-full mb-3">
                         <a href="{% url 'growlivapp:change_password' %}"
