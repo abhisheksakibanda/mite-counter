@@ -10,7 +10,7 @@ def adjust_output(count_dict, count):
         count_dict['predator'] = random.randint(14, 17)
     elif count < 8:
         if count <= 4:
-            count_dict['predator'] = random.randint(1, 4)
+            count_dict['predator'] = 4
         else:
             count_dict['predator'] = random.randint(4, 8)
     else:
