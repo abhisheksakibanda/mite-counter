@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
     <style>
-
         body, html {
             height: 100%; /* Full height */
             margin: 0;
@@ -16,50 +15,6 @@
             justify-content: center;
             align-items: center;
             background-color: #f7fafc; /* Adjust the background color as needed */
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .growliv-logo {
-            width: 300px;
-            height: 300px;
-            margin-bottom: 20px; /* Adjust or remove margin as needed */
-        }
-
-        .task-bar {
-            background-color: inherit;
-            padding: 15px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .task-bar-text, .mite-count-pro-text {
-            font-family: Arial, Helvetica, sans-serif;
-            color: black;
-            margin-left: 10px;
-            align-content: flex-start;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 50px auto 100px;
-            text-align: center;
-            position: relative;
-        }
-
-        .logo {
-            position: absolute;
-            top: 5px;
-            left: 10px;
-            width: 30px;
-            height: 30px;
         }
 
         input[type="submit"] {
@@ -73,40 +28,7 @@
             cursor: pointer;
         }
 
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
-        .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, .1);
-            width: 136px;
-            height: 136px;
-            border-radius: 50%;
-            border-left-color: #09f;
-            animation: spin 1s infinite linear;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+        
     </style>
 </head>
 <body>
@@ -115,14 +37,9 @@
     <div class="loading-overlay" id="loading-overlay">
         <div class="loading-spinner"></div>
     </div>
-    <div class="container" style="display: flex;
-            justify-content: center;
-            align-items: center;">
+    <div class="contain">
         <div class="main">
-            <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo" id="upload-image"
-                 style="
-                        width: 500px;
-                        padding-top: 50px;">
+            <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo" id="upload-image">
             <div class="login-form">
                 <form method="post" action="{% url 'growlivapp:upload' %}" enctype="multipart/form-data"
                       id="upload-form">
@@ -134,13 +51,15 @@
     </div>
 
     <script>
-        document.getElementById('upload-image').addEventListener('click', function () {
-            document.getElementById('file-upload').click();
-        });
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('upload-image').addEventListener('click', function () {
+                document.getElementById('file-upload').click();
+            });
 
-        document.getElementById('file-upload').addEventListener('change', function () {
-            document.getElementById('loading-overlay').classList.add('active');
-            document.getElementById('upload-form').submit();
+            document.getElementById('file-upload').addEventListener('change', function () {
+                document.getElementById('loading-overlay').classList.add('active');
+                document.getElementById('upload-form').submit();
+            });
         });
     </script>
 {% endblock %}

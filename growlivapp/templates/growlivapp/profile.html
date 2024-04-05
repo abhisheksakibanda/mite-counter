@@ -1,3 +1,4 @@
+{% extends 'growlivapp/base.html' %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -8,23 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-
-
-<div class="flex flex-col h-screen">
-    <header class="px-6 py-4 bg-white shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center">
-                <img src="{% static 'growlivapp/final.png' %}" alt="Mite Count Pro" class="logo w-8 h-8 mr-2">
-                <div class="text-black font-bold"><a href="{% url 'growlivapp:home' %}">Mite Count Pro</a></div>
-            </div>
-            <div class="space-x-4">
-                <a href="{% url 'growlivapp:scan_detail_page' %}" class="text-gray-600 hover:text-gray-900">History</a>
-                <a href="{% url 'growlivapp:profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
-                <a href="{% url 'growlivapp:logout_user' %}" class="text-gray-600 hover:text-gray-900">Logout</a>
-            </div>
-        </div>
-    </header>
-
+{% block body_block %}
     <main class="p-6 flex-grow">
         <div class="max-w-xl mx-auto">
             <div class="bg-white p-6 shadow rounded">
@@ -58,7 +43,7 @@
             </div>
         </div>
     </main>
-</div>
+{% endblock %}
 
 </body>
 </html>
