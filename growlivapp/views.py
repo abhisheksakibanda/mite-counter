@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
@@ -8,16 +9,15 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
-from django.contrib import messages
 
 from counterapp.models import Result
-from .forms import VideoForm, BusinessForm, forgotPasswordForm
+from .forms import VideoForm, BusinessForm, ForgotPasswordForm
 from .models import Business
 
 
 def scan_detail_page(request):
     # Fetch all scan results or use filters as needed
-    scan_results = Result.objects.all().order_by('-scan_date')
+    scan_results = Result.objects.filter(video__business__email=request.user.email).order_by('-scan_date')
 
     # Pass the results to the template
     context = {
@@ -107,7 +107,7 @@ def profile(request):
 
 
 def forgot_password(request):
-    emailfield = forgotPasswordForm()
+    forget_pswd_form = ForgotPasswordForm()
     if request.method == 'POST':
         email = request.POST['email']
         try:
@@ -115,8 +115,8 @@ def forgot_password(request):
             return render(request, template_name='growlivapp/instruction.html')
         except User.DoesNotExist:
             return render(request, template_name='growlivapp/forgot_password.html',
-                          context={'err': 'The email you entered does not exist in our records.', 'form': emailfield})
-    return render(request, template_name='growlivapp/forgot_password.html', context={'form': emailfield})
+                          context={'err': 'The email you entered does not exist in our records.', 'form': forget_pswd_form})
+    return render(request, template_name='growlivapp/forgot_password.html', context={'form': forget_pswd_form})
 
 
 @login_required
@@ -153,3 +153,9 @@ def home(request):
 def logout_user(request) -> HttpResponseRedirect:
     logout(request=request)
     return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:login'))
+
+
+def delete_record(request, record_id: int) -> HttpResponseRedirect:
+    video = Result.objects.get(id=record_id)
+    video.delete()
+    return redirect('growlivapp:scan_detail_page')

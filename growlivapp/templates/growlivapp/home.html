@@ -73,25 +73,6 @@
             cursor: pointer;
         }
 
-        .text-gray-600 {
-            color: #4a5568;
-            text-decoration: none;
-        }
-
-        .text-gray-600:hover {
-            color: #1a202c;
-        }
-
-        .custom-file-upload {
-            display: inline-block;
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 20px;
-            margin: 10px;
-        }
-
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -158,8 +139,7 @@
         });
 
         document.getElementById('file-upload').addEventListener('change', function () {
-            var loadingOverlay = document.getElementById('loading-overlay');
-            loadingOverlay.classList.add('active');
+            document.getElementById('loading-overlay').classList.add('active');
             document.getElementById('upload-form').submit();
         });
     </script>
