@@ -52,6 +52,15 @@ class BusinessRegisterView(CreateView):
             return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:home'))
         return super().get(request=request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs) -> HttpResponse:
+        form = BusinessForm(request.POST)
+        if form.is_valid():
+            business = form.save(commit=False)
+            business.username = form.cleaned_data.get('email')
+            form.save()
+            return HttpResponseRedirect(redirect_to=reverse(viewname='growlivapp:login'))
+        return render(request, template_name='growlivapp/signup.html', context={'form': form})
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -103,7 +112,18 @@ def instructions(request):
 
 def profile(request):
     business = Business.objects.get(email=request.user.email)
-    return render(request, template_name='growlivapp/profile.html', context={'business': business})
+    if request.method == 'POST':
+        form = BusinessForm(request.POST, instance=business)
+        business.email = form.data.get('email')
+        business.username = form.data.get('email')
+        business.business_name = form.data.get('business_name')
+        business.business_phone = form.data.get('business_phone')
+        business.contact_person_name = form.data.get('contact_person_name')
+        business.save()
+        return redirect('growlivapp:profile')
+    else:
+        form = BusinessForm(instance=business)
+    return render(request, template_name='growlivapp/profile.html', context={'business': form})
 
 
 def forgot_password(request):
@@ -115,7 +135,8 @@ def forgot_password(request):
             return render(request, template_name='growlivapp/instruction.html')
         except User.DoesNotExist:
             return render(request, template_name='growlivapp/forgot_password.html',
-                          context={'err': 'The email you entered does not exist in our records.', 'form': forget_pswd_form})
+                          context={'err': 'The email you entered does not exist in our records.',
+                                   'form': forget_pswd_form})
     return render(request, template_name='growlivapp/forgot_password.html', context={'form': forget_pswd_form})
 
 

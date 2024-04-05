@@ -12,56 +12,64 @@
 {% block body_block %}
     <main class="p-6 flex-grow">
         <div class="max-w-xl mx-auto">
-            {#        here will be the code for the information#}
             <div class="bg-white p-6 shadow rounded">
-                <h1 class="text-2xl font-bold text-center mb-6" style="font-family: Ubuntu">User Information</h1>
-                <div class="w-full mb-3">
-                    <label class="text-gray-700">Email</label>
-                    <input type="email" value="{{ business.email }}" readonly class="w-full p-2 border rounded">
-                </div>
-                <div class="w-full mb-3">
-                    <label class="text-gray-700">Business Name</label>
-                    <input type="email" value="{{ business.business_name }}" readonly class="w-full p-2 border rounded">
-                </div>
-                <div class="w-full mb-3">
-                    <label class="text-gray-700">Business Contact</label>
-                    <input type="email" value="{{ business.business_phone }}" readonly
-                           class="w-full p-2 border rounded">
-                </div>
-                <div class="w-full mb-3">
-                    <label class="text-gray-700">Contact Name</label>
-                    <input type="email" value="{{ business.contact_person_name }}" readonly
-                           class="w-full p-2 border rounded">
-                </div>
-                <div class="flex flex-col items-center pb-10" style="padding-top: 40px">
+                <h1 class="text-2xl font-bold text-center mb-6">User Information</h1>
+                <form method="post" action="{% url 'growlivapp:profile' %}">
+                    {% csrf_token %}
                     <div class="w-full mb-3">
-                        <a href="{% url 'growlivapp:change_password' %}"
-                           class="w-full text-center block bg-green-600 text-white p-2 rounded hover:bg-green-800">Save
-                            Changes</a>
+                        <label class="text-gray-700">Email</label>
+                        {{ business.email }}
                     </div>
                     <div class="w-full mb-3">
-                        <a href="{% url 'growlivapp:change_password' %}"
-                           class="w-full text-center block bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Change
-                            Password</a>
+                        <label class="text-gray-700">Business Name</label>
+                        {{ business.business_name }}
                     </div>
-                    <div class="w-full">
-                        <a href="#"
-                           class="w-full text-center block bg-red-500 text-white p-2 rounded hover:bg-red-600">Delete
-                            Account</a>
+                    <div class="w-full mb-3">
+                        <label class="text-gray-700">Business Contact</label>
+                        {{ business.business_phone }}
                     </div>
-                    {% if messages %}
-                        <div class="messages">
-                            {% for message in messages %}
-                                <div class="alert {{ message.tags }}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
+                    <div class="w-full mb-3">
+                        <label class="text-gray-700">Contact Name</label>
+                        {{ business.contact_person_name }}
+                    </div>
+                    <div class="flex flex-col items-center pb-10" style="padding-top: 40px">
+                        <div class="w-full mb-3">
+                            <button type="submit"
+                                    class="w-full text-center block bg-green-600 text-white p-2 rounded hover:bg-green-800">
+                                Save Changes
+                            </button>
                         </div>
-                    {% endif %}
-                </div>
+                        <div class="w-full mb-3">
+                            <a href="{% url 'growlivapp:change_password' %}"
+                               class="w-full text-center block bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Change
+                                Password</a>
+                        </div>
+                        <div class="w-full">
+                            <a href="#"
+                               class="w-full text-center block bg-red-500 text-white p-2 rounded hover:bg-red-600">Delete
+                                Account</a>
+                        </div>
+                        {% if messages %}
+                            <div class="messages">
+                                {% for message in messages %}
+                                    <div class="alert {{ message.tags }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </form>
             </div>
         </div>
     </main>
+    <script>
+        inputs = document.querySelectorAll('input');
+        // Add a classes to each input field
+        inputs.forEach(input => {
+            input.classList.add('w-full', 'p-2', 'border', 'rounded');
+        });
+    </script>
 {% endblock %}
 
 </body>
