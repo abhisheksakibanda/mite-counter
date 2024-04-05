@@ -1,81 +1,65 @@
+{% extends 'growlivapp/base.html' %}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
     <style>
-        body {
-            background-color: #fff;
-            /* white background */
+
+        body, html {
+            height: 100%; /* Full height */
             margin: 0;
-            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f7fafc; /* Adjust the background color as needed */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .growliv-logo {
+            width: 300px;
+            height: 300px;
+            margin-bottom: 20px; /* Adjust or remove margin as needed */
         }
 
         .task-bar {
             background-color: inherit;
-            /* inherit background color from body */
-            padding: 10px;
-            /* added padding for better spacing */
+            padding: 15px;
             display: flex;
-            /* display items in a flex container */
             justify-content: flex-end;
-            /* align items to the right side */
             align-items: center;
-            /* vertically center items */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         }
 
-        .task-bar-text {
+        .task-bar-text, .mite-count-pro-text {
             font-family: Arial, Helvetica, sans-serif;
             color: black;
             margin-left: 10px;
-            /* added margin between the texts */
+            align-content: flex-start;
         }
 
         .container {
             max-width: 600px;
             margin: 50px auto 100px;
-            /* adjusted margin for slightly positioning towards the top */
             text-align: center;
             position: relative;
-            /* added position relative for positioning absolute elements inside */
         }
 
         .logo {
             position: absolute;
             top: 5px;
-            /* position at the top of the task bar */
             left: 10px;
             width: 30px;
-            /* original width of Mite Count Pro logo */
             height: 30px;
-            /* original height of Mite Count Pro logo */
-        }
-
-        .mite-count-pro-text {
-            position: absolute;
-            top: 15px;
-            /* position at the top of the task bar */
-            left: 45px;
-            /* adjusted left position to create space between the logos */
-            font-size: 16px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .growliv-logo {
-            width: 300px;
-            /* set width to 300 pixels */
-            height: 300px;
-            /* set height to 300 pixels */
-            margin-top: 50px;
-            /* added margin-top to create space between the logos and the form */
-        }
-
-        .login-form {
-            margin-top: 50px;
         }
 
         input[type="submit"] {
@@ -84,33 +68,18 @@
             margin: 10px 0;
             border: none;
             border-radius: 20px;
-            /* curve the edges */
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
         }
 
-        .task-bar {
-            background-color: inherit;
-            /* inherit background color from body */
-            padding: 15px;
-            /* added padding for better spacing */
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            /* imaginary lightly colored border */
-
-        }
-
         .text-gray-600 {
             color: #4a5568;
-            /* Example gray color */
             text-decoration: none;
-            /* This line removes the underline */
         }
-
 
         .text-gray-600:hover {
             color: #1a202c;
-            /* Example darker gray color for hover effect */
         }
 
         .custom-file-upload {
@@ -123,50 +92,77 @@
             margin: 10px;
         }
 
-        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, .1);
+            width: 136px;
+            height: 136px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="task-bar">
-    <img src="{% static "growlivapp/final.png" %}" alt="Mite Count Pro" class="logo">
-    <div class="mite-count-pro-text">Mite Count Pro</div>
-
-    <div class="task-bar-text">
-        <a href="{% url 'growlivapp:scan_detail_page' %}" class="text-gray-600 hover:text-gray-900">History</a>
+{% block body_block %}
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
     </div>
-    <div class="task-bar-text">
-        <a href="{% url 'growlivapp:profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
-    </div>
-    <div class="task-bar-text">
-        <a href="{% url 'growlivapp:logout_user' %}" class="text-gray-600 hover:text-gray-900">Logout</a>
-    </div>
-</div>
-
-<div class="container">
-    <div class="main">
-        <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo" id="upload-image">
-        <div class="login-form">
-            <form method="post" action="{% url 'growlivapp:upload' %}" enctype="multipart/form-data" id="upload-form">
-                {% csrf_token %}
-                <input id="file-upload" type="file" name="video" style="display:none;"/>
-            </form>
+    <div class="container" style="display: flex;
+            justify-content: center;
+            align-items: center;">
+        <div class="main">
+            <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo" id="upload-image"
+                 style="
+                        width: 500px;
+                        padding-top: 50px;">
+            <div class="login-form">
+                <form method="post" action="{% url 'growlivapp:upload' %}" enctype="multipart/form-data"
+                      id="upload-form">
+                    {% csrf_token %}
+                    <input id="file-upload" type="file" name="video" style="display:none;"/>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    // Add event listener to the image for file upload dialog
-    document.getElementById('upload-image').addEventListener('click', function () {
-        document.getElementById('file-upload').click();
-    });
+    <script>
+        document.getElementById('upload-image').addEventListener('click', function () {
+            document.getElementById('file-upload').click();
+        });
 
-    // Submit the form on file selection
-    document.getElementById('file-upload').addEventListener('change', function () {
-        document.getElementById('upload-form').submit();
-    });
-</script>
-
+        document.getElementById('file-upload').addEventListener('change', function () {
+            var loadingOverlay = document.getElementById('loading-overlay');
+            loadingOverlay.classList.add('active');
+            document.getElementById('upload-form').submit();
+        });
+    </script>
+{% endblock %}
 </body>
-
 </html>

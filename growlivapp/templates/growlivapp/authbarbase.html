@@ -2,23 +2,26 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'growlivapp/login.css' %}">
     <title>Mite Count Pro</title>
+    
 </head>
 <body>
 
 {% if user.is_authenticated %}
-    <header class="px-6 py-4 bg-white shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center">
-                <img src="{% static 'growlivapp/final.png' %}" alt="Mite Count Pro" class="logo w-8 h-8 mr-2">
-                <div class="text-black font-bold">Mite Count Pro</div>
-            </div>
-            <div class="space-x-4">
-                <a href="{% url 'growlivapp:scan_detail_page' %}" class="text-gray-600 hover:text-gray-900">History</a>
-                <a href="{% url 'growlivapp:profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
-                <a href="{% url 'growlivapp:logout_user' %}" class="text-gray-600 hover:text-gray-900">Logout</a>
-            </div>
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <div class="header">
+        <div class="logo-container" style="padding-left: 40px">
+            <img src="{% static 'growlivapp/final.png' %}" alt="Mite Count Pro" class="logo w-8 h-8">
+            <div><a href="{% url 'growlivapp:home' %}" class="font-bold">Mite Count Pro</a></div>
         </div>
-    </header>
+        <div class="navigation">
+            <a href="{% url 'growlivapp:scan_detail_page' %}">History</a>
+            <a href="{% url 'growlivapp:profile' %}">Profile</a>
+            <a href="{% url 'growlivapp:logout_user' %}">Logout</a>
+        </div>
+    </div>
 {% endif %}
 
 {% block body_block %}

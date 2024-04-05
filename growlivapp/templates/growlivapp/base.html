@@ -1,0 +1,70 @@
+{% load static %}
+<html>
+<head>
+    <style>
+        body {
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        .header {
+
+            height: 50px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            background-color: #fff; /* Tailwind bg-white */
+            {#padding: 1rem; /* Tailwind p-4 */#}
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Tailwind shadow */
+        }
+
+        .header .logo {
+            margin-right: 0.5rem; /* Tailwind mr-2 */
+        }
+
+        .header a {
+            color: #4a5568; /* Tailwind text-gray-600 */
+            text-decoration: none;
+            margin-right: 1rem; /* Space-x-4 equivalent */
+        }
+
+        .header a:hover {
+            color: #1a202c; /* Tailwind hover:text-gray-900 */
+        }
+
+        .header .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .navigation {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="logo-container" style="padding-left: 50px">
+        <img src="{% static 'growlivapp/final.png' %}" alt="Mite Count Pro" class="logo w-8 h-8" style="width: 40px">
+        <div><a href="{% url 'growlivapp:home' %}" class="font-bold">Mite Count Pro</a></div>
+    </div>
+    <div class="navigation">
+        <a href="{% url 'growlivapp:scan_detail_page' %}">History</a>
+        <a href="{% url 'growlivapp:profile' %}">Profile</a>
+        <a href="{% url 'growlivapp:logout_user' %}">Logout</a>
+    </div>
+</div>
+
+{% block body_block %}
+    ***
+{% endblock %}
+</body>
+</html>
+
+
